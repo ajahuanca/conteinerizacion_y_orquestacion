@@ -1,0 +1,156 @@
+# =========================
+# 🔹 GLOBAL / UBUNTU
+# =========================
+# Archivos del sistema
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+.nfs*
+
+envRegistro
+
+# Archivos temporales
+tmp/
+temp/
+*.tmp
+*.bak
+*.log
+
+# Archivos de entorno local
+.env
+.env.local
+.env.development.local
+.env.production.local
+.env.test.local
+
+# =========================
+# 🔹 PYTHON / DJANGO
+# =========================
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Entorno virtual
+venv/
+env/
+ENV/
+.venv/
+.python-version
+
+# Configuración local de Django
+db.sqlite3
+db.sqlite3-journal
+
+# Archivos compilados
+*.mo
+*.pot
+
+# Archivos de cobertura y testing
+.coverage
+htmlcov/
+.tox/
+.nox/
+.cache/
+.pytest_cache/
+coverage.xml
+*.cover
+*.py,cover
+*.log
+
+# Build y distribución
+build/
+dist/
+eggs/
+parts/
+sdist/
+var/
+*.egg-info/
+.installed.cfg
+*.egg
+pip-wheel-metadata/
+pip-log.txt
+
+# IDEs
+.vscode/
+.idea/
+.spyproject/
+.ropeproject/
+__pypackages__/
+
+# Archivos temporales de migraciones (si no se usan)
+# users/migrations/__pycache__/
+# users/migrations/*.pyc
+
+# =========================
+# 🔹 ANGULAR / FRONTEND
+# =========================
+# Dependencias
+node_modules/
+
+# Build outputs
+dist/
+build/
+tmp/
+out-tsc/
+
+# Archivos de logs
+npm-debug.log
+yarn-debug.log
+yarn-error.log
+pnpm-debug.log
+lerna-debug.log
+
+# Archivos de bloqueo (solo guardar uno, si usas npm/yarn)
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Archivos de entorno Angular
+.angular/cache/
+.angular/
+.angular.json
+
+# Configuración local
+.env
+.env.local
+.env.development.local
+.env.production.local
+
+# Archivos de test y coverage
+coverage/
+*.lcov
+
+# =========================
+# 🔹 DOCKER (si lo usas)
+# =========================
+# Archivos temporales de volúmenes y builds
+docker-compose.override.yml
+*.pid
+*.tar
+*.log
+*.bak
+
+# =========================
+# 🔹 MISC
+# =========================
+# Archivos de documentación generada
+docs/_build/
+site/
+
+# Archivos de backup y temporales del editor
+*.~lock.*
+*.bak
+*.tmp
+*.swp
+*.swo
+
+# =========================
+# 🔹 PERSONAL
+# =========================
+# Archivos personales del desarrollador
+*.code-workspace
+*.iml
+.idea/
+.vscode/
