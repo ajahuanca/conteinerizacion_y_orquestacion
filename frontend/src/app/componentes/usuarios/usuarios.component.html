@@ -1,0 +1,58 @@
+<h5 class="mt-3">{{ editando ? 'Editar Usuario' : 'Nuevo Usuario' }}</h5>
+<form (ngSubmit)="editando ? actualizarUsuario() : agregarUsuario()" class="mb-3">
+	<div class="row g-2">
+		<div class="col-md-4">
+			<input [(ngModel)]="nuevoUsuario.numero_ci" name="numero_ci" class="form-control" placeholder="Numero de CI">
+		</div>
+		<div class="col-md-4">
+			<select class="form-control" name="tipo_documento_id" id="tipo_documento_id" [(ngModel)]="nuevoUsuario.tipo_documento_id">
+				@for(d of dataDocumento; track d){
+					<option [value]="d.id">{{d.tipo}}</option>
+				}
+			</select>
+		</div>
+		<div class="col-md-8">
+			<input [(ngModel)]="nuevoUsuario.nombre_completo" name="nombre_completo" class="form-control" placeholder="Nombre completo">
+		</div>
+		<div class="col-md-8">
+			<input [(ngModel)]="nuevoUsuario.correo_electronico" name="correo_electronico" class="form-control" placeholder="correo electronico">
+		</div>
+		<div class="col-md-2">
+			<button class="btn btn-primary w-100" type="submit">Agregar</button>
+		</div>
+	</div>
+</form>
+<hr>
+<h5>Lista de Usuarios</h5>
+<table class="table table-hover table-striped">
+	<thead>
+		<tr>
+			<th>ID</th>
+			<th>Numero CI</th>
+			<th>Documento</th>
+			<th>Nombre Completo</th>
+			<th>Email</th>
+			<th>Estado</th>
+			<th></th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr *ngFor="let u of usuarios">
+			<td>{{u.id}}</td>
+			<td>{{u.numero_ci}}</td>
+			<td>{{u.tipo_documento.tipo}}</td>
+			<td>{{u.nombre_completo}}</td>
+			<td>{{u.correo_electronico}}</td>
+			<td>@if (u.estado){
+				<b>Activo</b>
+				}@else {
+				<b>Inactivo</b>
+				}
+			</td>
+			<td>
+				<button (click)="editarUsuario(u.id)" class="btn btn-warning btn-sm m-1"><i class="bi bi-pencil-square"></i> Editar</button>
+				<button (click)="eliminarUsuario(u.id)" class="btn btn-danger btn-sm m-1"><i class="bi bi-trash"></i> Eliminar</button>
+			</td>
+		</tr>
+	</tbody>
+</table>
