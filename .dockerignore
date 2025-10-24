@@ -1,0 +1,22 @@
+# node / angular
+node_modules
+dist
+build
+**/*.log
+
+# python / django
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+env/
+venv/
+build/
+*.sqlite3
+*.egg-info
+
+# general
+.DS_Store
+.git
+.idea
+.vscode
