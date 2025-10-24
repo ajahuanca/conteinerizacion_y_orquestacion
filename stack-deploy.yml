@@ -1,0 +1,64 @@
+version: "3.8"
+services:
+  postgres:
+    image: postgres:15-alpine
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - app_net
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+    environment:
+      POSTGRES_DB: appdb
+      POSTGRES_USER: appuser
+    secrets:
+      - pg_password
+
+  backend:
+    image: python/backend:1.0.0
+    build: ./backend
+    depends_on:
+      - postgres
+    environment:
+      - DATABASE_URL=postgres://appuser:{{PG_PASSWORD}}@postgres:5432/appdb
+    networks:
+      - app_net
+    deploy:
+      replicas: 3
+      update_config:
+        parallelism: 1
+        delay: 10s
+      restart_policy:
+        condition: on-failure
+    secrets:
+      - django_secret_key
+
+  frontend:
+    image: yourrepo/frontend:1.0.0
+    build: ./frontend
+    networks:
+      - app_net
+    ports:
+      - target: 80
+        published: 80
+        protocol: tcp
+        mode: host
+    deploy:
+      replicas: 2
+      placement:
+        constraints: [node.role == worker]
+
+secrets:
+  pg_password:
+    external: false
+  django_secret_key:
+    external: false
+
+volumes:
+  pgdata:
+
+networks:
+  app_net:
+    driver: overlay
