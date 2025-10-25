@@ -1,4 +1,3 @@
-# ==========================
 # Etapa de build
 # ==========================
 FROM python:3.12-alpine AS build
@@ -13,7 +12,6 @@ RUN pip install --upgrade pip
 RUN pip wheel --wheel-dir=/wheels -r requirements.txt
 
 
-# ==========================
 # Etapa final
 # ==========================
 FROM python:3.12-alpine
