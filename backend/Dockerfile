@@ -1,20 +1,33 @@
-FROM python:3.11-alpine AS build
+# ==========================
+# Etapa de build
+# ==========================
+FROM python:3.12-alpine AS build
 
 RUN apk add --no-cache gcc musl-dev libffi-dev postgresql-dev build-base
 
 WORKDIR /app
 
 COPY backend/requirements.txt .
+
 RUN pip install --upgrade pip
 RUN pip wheel --wheel-dir=/wheels -r requirements.txt
 
-FROM python:3.11-alpine
+
+# ==========================
+# Etapa final
+# ==========================
+FROM python:3.12-alpine
+
 RUN apk add --no-cache libpq
 
 WORKDIR /app
+
 COPY --from=build /wheels /wheels
 COPY backend/requirements.txt .
+
 RUN pip install --no-index --find-links=/wheels -r requirements.txt
+
+COPY --chown=appuser:appgroup --chmod=755 backend/entrypoint.sh /entrypoint.sh
 
 COPY backend/ ./
 
@@ -25,6 +38,6 @@ USER appuser
 ENV PYTHONUNBUFFERED=1
 ENV DJANGO_SETTINGS_MODULE=registro.settings
 
-
 EXPOSE 8000
-CMD ["gunicorn", "registro.wsgi:application", "--bind", "0.0.0.0:8000", "--workers", "3"]
+
+CMD ["/entrypoint.sh"]

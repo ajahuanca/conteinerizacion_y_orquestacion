@@ -1,5 +1,12 @@
 # Proyecto de Conteinerización y Orquestación (Django REST + Angular)
 
+## Repositorio del proyecto
+
+* https://github.com/ajahuanca/conteinerizacion_y_orquestacion
+* https://github.com/ajahuanca/conteinerizacion_y_orquestacion.git 
+
+Este repositorio contiene toda la configuración, código fuente y documentación técnica necesaria para construir, ejecutar y desplegar la aplicación completa, desde el entorno local hasta un clúster Kubernetes.
+
 ## Descripción general
 Este proyecto implementa una aplicación web completa para el registro y gestión de usuarios, desarrollada como parte de un ejercicio práctico de conteinerización y orquestación.
 
@@ -13,9 +20,14 @@ Para este fin práctico, el sistema implementa los modelos de:
 * **Usuario**, con funcionalidades básicas de registro, listado, actualización y eliminación.
 * **TipoDocumento (o Documento)**, que permite asociar tipos o categorías de documento a cada usuario.
 
+![Formulario de Usuario](docs/media/formulario_documentos.png)
+![Formulario de Usuario](docs/media/formulario_usuario.png)
+
 Estos modelos exponen más de 6 endpoints REST funcionales, abarcando operaciones CRUD completas (Create, Read, Update, Delete) y demostrando el flujo completo de interacción entre frontend y backend.
 
-## Arquitectura base
+## Arquitectura monolítica
+
+![Arquitectura Monolítica](docs/media/Arquitectura.png)
 
 La solución está compuesta por los siguientes módulos principales:
 
@@ -36,29 +48,12 @@ El proyecto ofrece:
 * Estilos y componentes visuales basados en Bootstrap 5 y Bootstrap Icons.
 * Despliegue completo mediante Docker Compose (local), Docker Swarm (replicado) y Kubernetes KIND (clúster).
 
+![Documentación DRF Spectacular (Swagger) - Tipo de Documentos](docs/media/doc_api_tipo_documento.png)
+![Documentación DRF Spectacular (Swagger) - Usuarios](docs/media/doc_api_usuario.png)
+
 ## Estructura base del proyecto
 
-```bash
-├── backend/               # Proyecto Django REST
-│   ├── manage.py
-│   ├── registro/          # Configuracion base
-│   ├── modulos/           # Aplicaciones (usuarios, documentos, etc.)
-│   └── README_BACKEND.md  # Documentación técnica del backend
-│
-├── frontend/              # Proyecto Angular v18
-│   ├── src/
-│   └── README_FRONTEND.md # Documentación técnica del frontend
-│
-├── kind/                  # Archivos de despliegue del maniesto
-│   ├── .......            # Manifiestos YAML
-│   └── .......
-│
-├── swarm-stack.yml
-├── ........*.yml
-├── .gitignore
-└── README.md              # Archivo (documentación general)
-
-```
+![Documentación DRF Spectacular (Swagger) - Usuarios](docs/media/proyecto_base.png)
 
 ## Requisitos previos
 - Docker (>=20)
@@ -74,7 +69,9 @@ El proyecto ofrece:
    POSTGRES_DB=appdb
    POSTGRES_USER=appuser
    POSTGRES_PASSWORD=apppassword
-   SECRET_KEY=dev-secret
+   POSTGRES_HOST=db
+   POSTGRES_PORT=5432
+   DJANGO_SECRET_KEY=dev-secret
    DEBUG=1
    ```
 
