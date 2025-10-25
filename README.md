@@ -54,7 +54,7 @@ El proyecto ofrece:
 │   └── .......
 │
 ├── swarm-stack.yml
-├── ........
+├── ........*.yml
 ├── .gitignore
 └── README.md              # Archivo (documentación general)
 
