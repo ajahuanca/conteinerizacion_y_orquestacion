@@ -21,6 +21,7 @@ Para este fin práctico, el sistema implementa los modelos de:
 * **TipoDocumento (o Documento)**, que permite asociar tipos o categorías de documento a cada usuario.
 
 ![Formulario de Usuario](docs/media/formulario_documentos.png)
+
 ![Formulario de Usuario](docs/media/formulario_usuario.png)
 
 Estos modelos exponen más de 6 endpoints REST funcionales, abarcando operaciones CRUD completas (Create, Read, Update, Delete) y demostrando el flujo completo de interacción entre frontend y backend.
