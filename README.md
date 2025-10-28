@@ -7,7 +7,7 @@
 
 Este repositorio contiene toda la configuración, código fuente y documentación técnica necesaria para construir, ejecutar y desplegar la aplicación completa, desde el entorno local hasta un clúster Kubernetes.
 
-## Descripción general
+## 1) Descripción general
 Este proyecto implementa una aplicación web completa para el registro y gestión de usuarios, desarrollada como parte de un ejercicio práctico de conteinerización y orquestación.
 
 La aplicación está diseñada para demostrar la integración entre Django REST Framework (DRF) y Angular v18, complementada con una base de datos PostgreSQL y un entorno completamente dockerizado preparado para despliegue tanto local como en clústeres Docker Swarm y Kubernetes (KIND).
@@ -63,7 +63,11 @@ El proyecto ofrece:
 - kubectl
 - MetalLB y ingress-nginx para KIND
 
-## 1) Desarrollo local (Docker Compose)
+## 2) Desarrollo local (Docker Compose)
+
+   Para el cumplimiento de esta sección, cada servicio cuenta con su archivo de configuracion de tipo Dockerfile tanto el backend como el frontend, con etiquetas versionadas, imagenes ligeras (Alpine), sin exposición de credenciales y .dockerignore configurado.
+
+## 3) Desarrollo local (Docker Compose)
 1. Copiar `.env` con variables sensibles:
    ```env
    POSTGRES_DB=appdb
@@ -80,32 +84,65 @@ El proyecto ofrece:
    docker-compose up --build
    ```
 3. Acceder a las rutas para verificar las aplicaciones
-   * Frontend: http://localhost:8080
+   * Frontend: http://localhost:8082
    * Backend: http://localhost:8000
    * Adminer: http://localhost:8081
 
-## 2) Docker Swarm
+## 4) Docker Swarm
 
 1. Inicializamos Swarm
    ```
    docker swarm init
    ```
-2. Creamos los secretos
+2. Creamos los secretos y el config para NGINX
    ```
-   echo "apppassword" | docker secret create pg_password -
-   echo "django_secret_key" | docker secret create django_secret_key -
+   echo "apppassword" | docker secret create secret_password_db -
+   echo "django_secret_key" | docker secret create secret_django -
    ```
-3. Ahora subimos el Stack
+3. Construimos las imagenes tanto del backend y frontend
+   ```bash
+   docker build -t registro-backend:1.0.0 -f backend/Dockerfile .
+   docker build -t registro-frontend:1.0.0 -f frontend/Dockerfile .
    ```
-   docker stack deploy -c stack-deploy.yml appstack
+4. Ahora desplegamos el Stack
    ```
-4. Visualizamos los servicios
+   docker stack deploy -c stack-deploy.yml registro_stack
    ```
-   docker stack ps appstack
+6. Visualizamos los servicios y sus tareas
+   ```
+   docker stack ps registro_stack
    docker service ls
    ```
+7. Escalando el registro_stack_backend a 4
+   ```
+   docker service scale registro_stack_backend=4
+   ```
+8. Lista de las replicas del servicio stack backend
+   ```
+   docker service ps registro_stack_backend
+   ```
 
-## 3) Kubernetes (KIND, conforme la lista designada)
+En resumen se realizo:
+- Conversión de docker-compose.yml a stack-deploy.yml
+- Se tomó el archivo docker-compose.yml como base y se adaptó a las reglas de Docker Swarm, generando un nuevo archivo llamado stack-deploy.yml.
+- En esta conversión se añadieron:
+  - Sección deploy: en cada servicio, con configuración de réplicas y políticas de actualización.
+  - Uso de configs y secrets externos, gestionados por Swarm.
+  - Versionamiento de imágenes (registro-backend:1.0.0, registro-frontend:1.0.0).
+  - Redes y volúmenes personalizados, mantenidos desde Compose.
+Esto permitió que el mismo proyecto se ejecute como un stack distribuido y escalable, en lugar de simples contenedores aislados.
+
+## 5) Kubernetes (KIND, conforme la lista designada)
+
+Para el cumplimiento de esta sección se ha creado los siguientes archivos *.yaml
+| Archivo               | Función                                                                                         |
+| --------------------- | ----------------------------------------------------------------------------------------------- |
+| **replicaset.yaml**   | ReplicaSet base para gestionar réplicas del backend.                                            |
+| **deployment.yaml**   | Controlador de despliegue (Deployment) para versiones y actualizaciones del backend y frontend. |
+| **service.yaml**      | Servicios internos para exponer backend y frontend dentro del cluster.                          |
+| **loadbalancer.yaml** | LoadBalancer (o Ingress) para exponer el frontend y backend al exterior del cluster kind.       |
+| **secret.yaml**       | Secret para almacenar variables sensibles (clave Django, contraseña DB).                        |
+
 
 1. Creamos el cluster con KIND:
    ```
