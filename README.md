@@ -28,7 +28,7 @@ Estos modelos exponen más de 6 endpoints REST funcionales, abarcando operacione
 
 ## Arquitectura monolítica
 
-![Arquitectura Monolítica](docs/media/Arquitectura.png)
+![Arquitectura Monolitica](docs/media/Arquitectura.png)
 
 La solución está compuesta por los siguientes módulos principales:
 
