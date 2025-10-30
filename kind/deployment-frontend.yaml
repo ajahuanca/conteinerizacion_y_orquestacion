@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: registro-frontend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: registro-frontend
+  template:
+    metadata:
+      labels:
+        app: registro-frontend
+    spec:
+      containers:
+        - name: frontend
+          image: registro-frontend:2.0.0
+          imagePullPolicy: IfNotPresent                
+          ports:
+            - containerPort: 80

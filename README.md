@@ -1,5 +1,7 @@
 # Proyecto de Conteinerización y Orquestación (Django REST + Angular)
 
+[Documento con capturas de pantalla](/docs/ContainerizationAndContainerOrchestration.pdf)
+
 ## Repositorio del proyecto
 
 * https://github.com/ajahuanca/conteinerizacion_y_orquestacion
@@ -144,11 +146,11 @@ Para el cumplimiento de esta sección se ha creado los siguientes archivos *.yam
 | **loadbalancer.yaml** | LoadBalancer (o Ingress) para exponer el frontend y backend al exterior del cluster kind.       |
 | **secret.yaml**       | Secret para almacenar variables sensibles (clave Django, contraseña DB).                        |
 
+docker run -d --restart=always -p "5000:5000" --name registry registry:2
 
 1. Creamos el cluster con KIND:
    ```
-   kind create cluster --name app-cluster
-   kubectl create namespace app-registro
+   kind create cluster --name app-cluster-registro
    ```
 2. Se recomienda instalar MetalLB para LoadBalancer en KIND:
 
@@ -157,16 +159,20 @@ Para el cumplimiento de esta sección se ha creado los siguientes archivos *.yam
 
 3. Ahora aplicamos los manifests:
    ```
-   kubectl apply -f k8s/namespace-config.yaml
-   kubectl apply -f k8s/postgres-deployment.yaml
-   kubectl apply -f k8s/deployment-backend.yaml
-   kubectl apply -f k8s/deployment-frontend.yaml
+   kubectl apply -f kind/deployment-backend.yaml
+   kubectl apply -f kind/deployment-frontend.yaml
+   kubectl apply -f kind/loadbalancer.yaml
+   kubectl apply -f kind/service-backend.yaml
+   kubectl apply -f kind/service-frontend.yaml
    ```
-4. Revisamos
+4. Revisamos si estan corriendo sus PODS
    ```
-   kubectl get pods -n app-registro
-   kubectl get svc -n app-registro
+   kubectl get pods
+   kubectl get svc
    ```
+
+La Documentación se encuentra en PDF
+[Documento con capturas de pantalla](/docs/ContainerizationAndContainerOrchestration.pdf)
 
 ## Buenas prácticas implementadas
 
